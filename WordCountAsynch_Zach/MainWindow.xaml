@@ -1,0 +1,386 @@
+﻿<Window x:Class="WordCountAsynch_Zach.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WordCountAsynch_Zach"
+        mc:Ignorable="d"
+        Title="WordCounter" 
+        Height="600"
+        Width="900"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Background="Transparent"
+        AllowsTransparency="True"
+        MouseDown="Window_MouseDown">
+    <Window.Resources>
+        <Style TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="IsHitTestVisible" Value="False"/>
+        </Style>
+    </Window.Resources>
+
+    <Border CornerRadius="30"
+            Background="White"
+            BorderBrush="Black"
+            BorderThickness="2">
+        <Grid Background="Transparent">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="500"/>
+                <ColumnDefinition Width="50"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="380"/>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Image Grid.Column="1" 
+                   Height="80" 
+                   Margin="50,10,50,394" 
+                   Grid.RowSpan="3"
+                   Width="200" 
+                   Source="/Assets/AntonPaarLogo.png"
+                   RenderTransformOrigin="0.493,0.568" 
+                   IsEnabled="False"/>
+
+            <Label Grid.Column="1" 
+                   Content="Copyright by Anton Paar" 
+                   HorizontalAlignment="Left" 
+                   Margin="108,58,0,0" 
+                   Grid.RowSpan="2" 
+                   VerticalAlignment="Top" 
+                   Width="159"/>
+
+            <Button x:Name="btnMinmize"
+                    Grid.Row="1" 
+				    Margin="435,0,0,0"
+				    BorderThickness="0"
+				    Content="-"
+				    FontSize="20"
+				    FontFamily="Montserrat"
+				    Cursor="Hand"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Left" 
+                    Grid.Column="2" Click="btnMinmize_Click">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="lightGray"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="Gray"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Button.Template>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Width="25" Height="25"
+								CornerRadius="12.5"
+								Background="{TemplateBinding Background}">
+                            <ContentPresenter   VerticalAlignment="Center"
+											    HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <Button x:Name="btnClose"
+                    Grid.Row="1" 
+				    Margin="475,0,0,0"
+				    BorderThickness="0"
+				    Content="x"
+				    FontSize="20"
+				    FontFamily="Montserrat"
+				    Cursor="Hand"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Left" 
+                    Grid.Column="2" Click="btnClose_Click">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="Red"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="DarkRed"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="Black"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Width="25" 
+                                Height="25"
+								CornerRadius="12.5"
+				    		    Background="{TemplateBinding Background}">
+                            <ContentPresenter VerticalAlignment="Center"
+											  HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <Button x:Name="btnSelectFile"
+                    Grid.Column="1" 
+                    Content="Select File" 
+                    HorizontalAlignment="Center"
+                    Margin="0,70,0,0" 
+                    Grid.Row="2" 
+                    VerticalAlignment="Top" 
+                    Width="110" 
+                    Height="30"
+                    Cursor="Hand"
+                    Click="btnSelectFile_Click">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="LightBlue"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"></Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border
+                            CornerRadius="10"
+                            BorderBrush="Black"
+                            BorderThickness="1"
+						    Background="{TemplateBinding Background}">
+                            <ContentPresenter   VerticalAlignment="Center"
+									            HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <Button x:Name="btnStartCounting"
+                    Grid.Column="1" 
+                    Content="Start Counting" 
+                    HorizontalAlignment="Center" 
+                    Grid.Row="2" 
+                    VerticalAlignment="Top" 
+                    Width="110" 
+                    Height="30"
+                    Margin="0,120,0,0"
+                    Cursor="Hand"
+                    Click="btn_getOccurrences" IsEnabled="False">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="LightBlue"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"></Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border
+                            CornerRadius="10"
+                            BorderBrush="Black"
+                            BorderThickness="1"
+						    Background="{TemplateBinding Background}">
+                            <ContentPresenter   VerticalAlignment="Center"
+									            HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <Button x:Name="btnSave"
+                    Grid.Column="1" 
+                    Content="Save" 
+                    HorizontalAlignment="Center"
+                    Margin="0,170,0,0" 
+                    Grid.Row="2" 
+                    VerticalAlignment="Top" 
+                    Width="110" 
+                    Height="30" 
+                    Cursor="Hand"
+                    IsEnabled="False"
+                    Click="btnSave_Click">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="LightBlue"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"></Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border
+                            CornerRadius="10"
+                            BorderBrush="Black"
+                            BorderThickness="1"
+						    Background="{TemplateBinding Background}">
+                            <ContentPresenter   VerticalAlignment="Center"
+									            HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <Button x:Name="btnAbort"
+                    Grid.Column="1" 
+                    Content="Abort" 
+                    HorizontalAlignment="Center"
+                    Margin="0,270,0,0" 
+                    Grid.Row="2" 
+                    VerticalAlignment="Top" 
+                    Width="110" 
+                    Height="30" 
+                    Foreground="red"
+                    Cursor="Hand"
+                    IsEnabled="False"
+                    Click="btnAbort_Click">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="LightBlue"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"></Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border
+                            CornerRadius="20"
+                            BorderBrush="Red"
+                            BorderThickness="1"
+						    Background="{TemplateBinding Background}">
+                            <ContentPresenter   VerticalAlignment="Center"
+									            HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <Button x:Name="btnAbout"
+                    Grid.Column="1" 
+                    Content="About" 
+                    HorizontalAlignment="Center"
+                    Margin="0,310,0,0" 
+                    Grid.Row="2" 
+                    VerticalAlignment="Top" 
+                    Width="110" 
+                    Height="30" 
+                    Cursor="Hand"
+                    Click="btnAbout_Click">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="LightBlue"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"></Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border
+                            CornerRadius="20"
+                            BorderBrush="Black"
+                            BorderThickness="1"
+						    Background="{TemplateBinding Background}">
+                            <ContentPresenter   VerticalAlignment="Center"
+									            HorizontalAlignment="Center"/>
+
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <ProgressBar x:Name="progressBar"
+                         Grid.Column="1"
+                         HorizontalAlignment="Center" 
+                         Height="28" 
+                         Grid.Row="3" 
+                         VerticalAlignment="Center" 
+                         Width="800"
+                         Grid.ColumnSpan="2"
+                         Foreground="Red"
+                         IsIndeterminate="False">
+                <!--<ProgressBar.Style>
+                    <Style TargetType="ProgressBar">
+                        <Setter Property="" Value="red" />
+                    </Style>
+                </ProgressBar.Style>
+                <ProgressBar.Template>
+                    <ControlTemplate>
+                        <Border CornerRadius="10"
+                                
+                                Background="{TemplateBinding Background}">
+                            
+                        </Border>
+                    </ControlTemplate>
+                </ProgressBar.Template>-->
+            </ProgressBar>
+
+            <ListView x:Name="listViewWords"
+                      Grid.Column="2" 
+                      Grid.Row="2" 
+                      d:ItemsSource="{d:SampleData ItemCount=5}"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Background" Value="AliceBlue" />
+                        <Setter Property="BorderBrush" Value="BlanchedAlmond" />
+                        <Setter Property="BorderThickness" Value="1" />
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Foreground" Value="Red" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.View>
+                    <GridView x:Name="gridViewWords">
+                        <GridViewColumn Header="Word" 
+                                        Width="300" 
+                                        DisplayMemberBinding="{Binding Path=Word}" 
+                                        />
+                        <GridViewColumn Header="Occurrance" 
+                                        Width="200"
+                                        DisplayMemberBinding="{Binding Path=Occurrance}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            
+            <Label Grid.Column="1" 
+                   Content="Copyright by Anton Paar" 
+                   HorizontalAlignment="Left" 
+                   Margin="108,58,0,0" 
+                   Grid.RowSpan="2" 
+                   VerticalAlignment="Top" 
+                   Width="159"/>
+
+        </Grid>
+    </Border>
+</Window>
