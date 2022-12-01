@@ -104,7 +104,7 @@
                     Grid.Column="2" Click="btnClose_Click">
                 <Button.Style>
                     <Style TargetType="Button">
-                        <Setter Property="Background" Value="Red"/>
+                        <Setter Property="Background" Value="red"/>
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="DarkRed"/>
@@ -348,6 +348,7 @@
                       Grid.Row="2" 
                       d:ItemsSource="{d:SampleData ItemCount=5}"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="Background" Value="AliceBlue" />

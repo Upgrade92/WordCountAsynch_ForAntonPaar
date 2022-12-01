@@ -14,7 +14,7 @@ namespace WordCountAsynch_Zach.Data
         /// <returns>Array of single words</returns>
         public string[] splitContent(string content)
         {
-            char[] sep = { ' ', ',', '!', '?', '"', '\'', '*', '-', '.', '\r', '\n', '\b' };
+            char[] sep = { ' ', ',', '!', '?', '"', '\'', '*', '-', '.', '\r', '\n', '\b', '\t' };
             string[] words = null;
 
             words = content.Split(sep);
@@ -38,23 +38,23 @@ namespace WordCountAsynch_Zach.Data
                     foreach (string word in words)
                     {
                         try
-                        {
-                            if (_cts.IsCancellationRequested)
-                            {
-                                _cts.ThrowIfCancellationRequested();
-                                dictCounts.Clear();
-                                break;
-                            }
-
+                        {                           
                             if (!(dictCounts.ContainsKey(word)))
                             {
                                 dictCounts.Add(word, 1);
                             }
                             else dictCounts[word]++;
-                            dictCounts.Remove("");
+
+                            if (_cts.IsCancellationRequested)
+                            {
+                                dictCounts.Clear();
+                                _cts.ThrowIfCancellationRequested();
+                                break;
+                            }
                         }
-                        catch (OperationCanceledException) { /*MessageBox.Show("cancel 2");*/ }
+                        catch (OperationCanceledException) { }
                     }
+                    dictCounts.Remove("");
                 });
                 return dictCounts;
             }

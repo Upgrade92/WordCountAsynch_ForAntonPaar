@@ -58,14 +58,13 @@ namespace WordCountAsynch_Zach.SupportClasses
                         writer.WriteLine(content);
                         writer.Dispose();
                         writer.Close();
-
-                        MessageBox.Show("saved!", "Info");
                     }
                 }
             }));
             t.SetApartmentState(ApartmentState.STA);
             t.Start();
             t.Join();
+            MessageBox.Show("saved!", "Info");
         }
 
         /// <summary>

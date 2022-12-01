@@ -17,7 +17,6 @@ namespace WordCountAsynch_Zach
     public partial class MainWindow : Window
     {
         CancellationTokenSource _cts = null;
-        private string content = string.Empty;
         private string filePath = string.Empty;
 
         public MainWindow()
@@ -49,7 +48,7 @@ namespace WordCountAsynch_Zach
         private async void btn_getOccurrences(object sender, RoutedEventArgs e)
         {
 
-            if (filePath != string.Empty)
+            if (!string.IsNullOrEmpty(filePath))
             {
                 _cts = new CancellationTokenSource();
               
@@ -75,6 +74,11 @@ namespace WordCountAsynch_Zach
                     MessageBox.Show("canceled", "Info");
                 }
 
+                if(wordDict != null)
+                {
+                    wordDict.Clear();
+                }
+
                 GuiHelper.disableButton(btnAbort);
                 GuiHelper.enableButton(btnSelectFile);
                 GuiHelper.toggleSaveButton(listViewWords, btnSave);
@@ -98,8 +102,7 @@ namespace WordCountAsynch_Zach
                 {
                     foreach (Words word in listViewWords.Items)
                     {
-                        sb.AppendLine(word.Word.ToString() + "\t" + word.Occurrance.ToString());
-
+                        sb.AppendLine($"{word.Word,-20}  {word.Occurrance.ToString(),10}");
                     }
                     new FileHandler().saveFileAsTxt(sb.ToString());
                 });
@@ -154,7 +157,7 @@ namespace WordCountAsynch_Zach
         }
 
         /// <summary>
-        /// show About Inof
+        /// Displays About Info
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -171,7 +174,6 @@ namespace WordCountAsynch_Zach
             progressBar.Value = 0;
             listViewWords.Items.Clear();
             filePath = string.Empty;
-            content = string.Empty;
             GuiHelper.disableButton(btnStartCounting);
             GuiHelper.toggleSaveButton(listViewWords, btnSave);
         }     
