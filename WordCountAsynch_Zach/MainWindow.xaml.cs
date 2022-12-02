@@ -4,7 +4,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using WordCountAsynch_Zach.Data;
 using WordCountAsynch_Zach.SupportClasses;
@@ -69,10 +68,6 @@ namespace WordCountAsynch_Zach
                         listViewWords.Items.Add(wordToAdd);
                     }
                 }
-                else
-                {
-                    MessageBox.Show("canceled", "Info");
-                }
 
                 if(wordDict != null)
                 {
@@ -83,9 +78,7 @@ namespace WordCountAsynch_Zach
                 GuiHelper.enableButton(btnSelectFile);
                 GuiHelper.toggleSaveButton(listViewWords, btnSave);
                 GuiHelper.endProgressBar(progressBar,listViewWords);
-
             }
-            else MessageBox.Show("No file selected!", "Error");
         }
 
         /// <summary>
@@ -107,7 +100,6 @@ namespace WordCountAsynch_Zach
                     new FileHandler().saveFileAsTxt(sb.ToString());
                 });
             }
-            else MessageBox.Show("Nothing to save!", "Error");
         }
 
         /// <summary>
@@ -121,6 +113,8 @@ namespace WordCountAsynch_Zach
             GuiHelper.endProgressBar(progressBar,listViewWords);
             GuiHelper.enableButton(btnSelectFile);
             GuiHelper.disableButton(btnAbort);
+            MessageBox.Show("canceled", "Info");
+
         }
 
         /// <summary>
