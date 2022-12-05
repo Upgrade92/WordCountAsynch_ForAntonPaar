@@ -45,6 +45,7 @@ namespace WordCountAsynch_Zach.SupportClasses
         /// <param name="content"></param>
         public void saveFileAsTxt(string content)
         {
+            bool check = false;
             Thread t = new Thread((ThreadStart)(() =>
             {
                 SaveFileDialog save = new SaveFileDialog();
@@ -57,13 +58,18 @@ namespace WordCountAsynch_Zach.SupportClasses
                     {
                         writer.WriteLine(content);
                         writer.Dispose();
-                        writer.Close();
+                        writer.Close();                                              
                     }
+                    check = true;
                 }
             }));
             t.SetApartmentState(ApartmentState.STA);
             t.Start();
             t.Join();
+            if (check)
+            {
+                MessageBox.Show("saved!", "Info");
+            }
         }
 
         /// <summary>
