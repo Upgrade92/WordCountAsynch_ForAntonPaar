@@ -64,7 +64,6 @@ namespace WordCountAsynch_Zach.SupportClasses
             t.SetApartmentState(ApartmentState.STA);
             t.Start();
             t.Join();
-            MessageBox.Show("saved!", "Info");
         }
 
         /// <summary>
